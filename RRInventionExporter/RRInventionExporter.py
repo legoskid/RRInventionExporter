@@ -106,13 +106,10 @@ def main():
     # Directory containing this script (for locating helper scripts)
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    # Output base directory (same as the JSON file's directory)
-    output_base = os.path.dirname(os.path.abspath(json_file_path))
-
     # --- Set up logging ---
     original_stdout = sys.stdout
     log_filename = f"export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-    log_path = os.path.join(output_base, log_filename)
+    log_path = os.path.join(script_dir, log_filename)
     log_file = open(log_path, "w", encoding="utf-8")
     sys.stdout = TeeFile(log_file, original_stdout)
 
@@ -132,7 +129,7 @@ def main():
 
             # --- Create output folder ---
             folder_name = sanitize_folder_name(name)
-            folder_path = os.path.join(output_base, folder_name)
+            folder_path = os.path.join(script_dir, folder_name)
             os.makedirs(folder_path, exist_ok=True)
             print(f"  Folder: {folder_path}")
 
