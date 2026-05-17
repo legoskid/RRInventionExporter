@@ -174,7 +174,7 @@ def main():
 
             # --- Download blob ---
             if blob_name:
-                blob_url = f"https://cdn.rec.net/room/{blob_name}"
+                blob_url = f"https://cdn.rec.net/invention/{blob_name}"
                 blob_path = os.path.join(folder_path, blob_name)
                 print(f"  Downloading blob: {blob_url}")
                 download_file(blob_url, blob_path, auth_headers)
