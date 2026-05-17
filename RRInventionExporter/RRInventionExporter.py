@@ -7,6 +7,9 @@ import sys
 from datetime import datetime
 
 import requests
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class TeeFile:
@@ -37,7 +40,7 @@ def sanitize_folder_name(name: str, max_length: int = 50) -> str:
 def download_file(url: str, dest_path: str, headers: dict) -> bool:
     """Download a file from a URL to dest_path. Returns True on success."""
     try:
-        response = requests.get(url, headers=headers, stream=True, timeout=60)
+        response = requests.get(url, headers=headers, stream=True, timeout=60, verify=False)
         response.raise_for_status()
         with open(dest_path, "wb") as f:
             for chunk in response.iter_content(chunk_size=8192):
@@ -51,7 +54,7 @@ def download_file(url: str, dest_path: str, headers: dict) -> bool:
 def fetch_json(url: str, headers: dict) -> dict | list | None:
     """Fetch JSON from a URL. Returns parsed object or None on failure."""
     try:
-        response = requests.get(url, headers=headers, timeout=60)
+        response = requests.get(url, headers=headers, timeout=60, verify=False)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
