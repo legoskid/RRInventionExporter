@@ -190,14 +190,17 @@ def main():
                     if not os.path.isfile(script_path):
                         print(f"  WARNING: Script not found, skipping: {script_path}")
                         continue
-                    cmd = [sys.executable, script_path, blob_name, "-o", folder_path]
+                    print(blob_path)
+                    cmd = [sys.executable, script_path, blob_path, "-o", folder_path]
                     print(f"  Running: {script_name} ...")
                     try:
                         result = subprocess.run(cmd, capture_output=True, text=True)
+                        if result.stdout:
+                            print(result.stdout, end='')
+                        if result.stderr:
+                            print(result.stderr, end='')
                         if result.returncode != 0:
-                            print(f"    WARNING: {script_name} exited with code {result.returncode}")
-                            if result.stderr:
-                                print(f"    STDERR: {result.stderr.strip()}")
+                            print(f"  ERROR: Script {script_name} exited with code {result.returncode}")
                         else:
                             print(f"    Done.")
                     except Exception as e:
